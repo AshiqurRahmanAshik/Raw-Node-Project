@@ -1,7 +1,8 @@
 // dependencies
 const http = require("http");
-const { parse } = require("path");
-const url = require("url"); // this dependencies is required to work with path
+const url = require("url");
+const { StringDecoder } = require("string_decoder");
+const { relative } = require("path");
 
 // app object
 const app = {};
@@ -22,18 +23,28 @@ app.createServer = () => {
 // handle request and response
 app.handleReqRes = (req, res) => {
   //! Request Handling
-  //const parsedUrl = url.parse(req.url, true); //(Older Method)
-  const parsedUrl = new URL(req.url, `http://${req.headers.host}`); // New Method
-  const path = parsedUrl.pathname;
-  const trimmedPath = path.replace(/^\/+|\/+$/g, "");
+  const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+  const trimmedPath = parsedUrl.pathname.replace(/^\/+|\/+$/g, "");
   const method = req.method.toLowerCase();
   const queryStringObject = Object.fromEntries(parsedUrl.searchParams);
   const headers = req.headers;
 
-  console.log(headers);
+  const decoder = new StringDecoder("utf-8");
+  let realData = "";
 
-  //! Response Handling
-  res.end("Hello World");
+  req.on("data", (buffer) => {
+    realData += decoder.write(buffer);
+    /*
+    - Data is coming in the form of  chunks
+    - Buffer (binary) → Decoder → Normal String (readable)
+     */
+  });
+
+  req.on("end", () => {
+    realData += decoder.end(); //if some chunks remains left, it will be added
+    console.log(realData);
+    res.end(realData);
+  });
 };
 
 // start server
