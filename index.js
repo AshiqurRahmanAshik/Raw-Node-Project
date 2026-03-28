@@ -26,12 +26,11 @@ app.handleReqRes = (req, res) => {
   const parsedUrl = new URL(req.url, `http://${req.headers.host}`); // New Method
   const path = parsedUrl.pathname;
   const trimmedPath = path.replace(/^\/+|\/+$/g, "");
-
   const method = req.method.toLowerCase();
-
   const queryStringObject = Object.fromEntries(parsedUrl.searchParams);
+  const headers = req.headers;
 
-  console.log(queryStringObject);
+  console.log(headers);
 
   //! Response Handling
   res.end("Hello World");
