@@ -21,15 +21,17 @@ app.createServer = () => {
 
 // handle request and response
 app.handleReqRes = (req, res) => {
-  // Request Handling
+  //! Request Handling
   //const parsedUrl = url.parse(req.url, true); //(Older Method)
   const parsedUrl = new URL(req.url, `http://${req.headers.host}`); // New Method
   const path = parsedUrl.pathname;
   const trimmedPath = path.replace(/^\/+|\/+$/g, "");
 
-  console.log(trimmedPath);
+  const method = req.method.toLowerCase();
 
-  // Response Handling
+  console.log(method);
+
+  //! Response Handling
   res.end("Hello World");
 };
 
