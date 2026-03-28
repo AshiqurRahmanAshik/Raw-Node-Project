@@ -29,7 +29,9 @@ app.handleReqRes = (req, res) => {
 
   const method = req.method.toLowerCase();
 
-  console.log(method);
+  const queryStringObject = Object.fromEntries(parsedUrl.searchParams);
+
+  console.log(queryStringObject);
 
   //! Response Handling
   res.end("Hello World");
