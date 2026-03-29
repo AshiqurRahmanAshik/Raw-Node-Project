@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch index.js index",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cross-env NODE_ENV=staging nodemon index.js",
+    "production": "cross-env NODE_ENV=production nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/AshiqurRahmanAshik/Raw-Node-Project/issues"
   },
-  "homepage": "https://github.com/AshiqurRahmanAshik/Raw-Node-Project#readme"
+  "homepage": "https://github.com/AshiqurRahmanAshik/Raw-Node-Project#readme",
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "nodemon": "^3.1.14"
+  }
 }

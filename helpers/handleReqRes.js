@@ -31,14 +31,6 @@ handler.handleReqRes = (req, res) => {
     ? routes[trimmedPath]
     : notFoundHandler;
 
-  chosenHandler(requestProperties, (statusCode, payload) => {
-    statusCode = typeof statusCode === "number" ? statusCode : 500;
-    payload = typeof payload === "object" ? payload : {};
-    const payLoadString = JSON.stringify(payload);
-    res.writeHead(statusCode);
-    res.end(payLoadString);
-  });
-
   req.on("data", (buffer) => {
     realData += decoder.write(buffer);
     /*
@@ -49,8 +41,14 @@ handler.handleReqRes = (req, res) => {
 
   req.on("end", () => {
     realData += decoder.end(); //if some chunks remains left, it will be added
-    console.log(realData);
-    res.end(realData);
+
+    chosenHandler(requestProperties, (statusCode, payload) => {
+      statusCode = typeof statusCode === "number" ? statusCode : 500;
+      payload = typeof payload === "object" ? payload : {};
+      const payLoadString = JSON.stringify(payload);
+      res.writeHead(statusCode);
+      res.end(payLoadString);
+    });
   });
 };
 
